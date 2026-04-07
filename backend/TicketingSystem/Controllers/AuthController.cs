@@ -4,6 +4,9 @@ using TicketingSystem.DTOs;
 
 namespace TicketingSystem.Controllers
 {
+    /// <summary>
+    /// Handles authentication endpoints (Register & Login)
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -15,18 +18,66 @@ namespace TicketingSystem.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Register new user
+        /// </summary>
         [HttpPost("register")]
-        public IActionResult Register(RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var result = _service.Register(dto);
-            return Ok(new { message = result });
+            // ✅ Validation
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var result = await _service.RegisterAsync(dto);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "User registered successfully",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
         }
 
+        /// <summary>
+        /// Login user
+        /// </summary>
         [HttpPost("login")]
-        public IActionResult Login(LoginDto dto)
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var result = _service.Login(dto);
-            return Ok(result);
+            // ✅ Validation
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var result = await _service.LoginAsync(dto);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Login successful",
+                    data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
         }
     }
 }

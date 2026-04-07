@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj": {}
+    "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj": {}
   },
   "projects": {
-    "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj": {
+    "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj",
+        "projectUniqueName": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj",
         "projectName": "TicketingSystem",
-        "projectPath": "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj",
+        "projectPath": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj",
         "packagesPath": "C:\\Users\\arvin\\.nuget\\packages\\",
-        "outputPath": "C:\\customer-support-system\\backend\\TicketingSystem\\obj\\",
+        "outputPath": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arvin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -50,25 +50,21 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[10.0.5, )"
-            },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[8.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[8.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[8.0.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[10.1.7, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [

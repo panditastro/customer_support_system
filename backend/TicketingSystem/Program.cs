@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // =======================
@@ -18,13 +20,49 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // =======================
-// Swagger
+// Swagger + JWT
 // =======================
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    // Swagger basic info
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Ticketing API",
+        Version = "v1",
+        Description = "API for Ticketing System"
+    });
+
+    // 🔐 JWT AUTH CONFIG
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Enter JWT token like: Bearer {your token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // =======================
-// SQL SERVER Connection ✅
+// Database (SQL Server)
 // =======================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -38,7 +76,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // =======================
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<JwtService>(); // clean reference
+builder.Services.AddScoped<JwtService>();
 
 // =======================
 // JWT CONFIG
@@ -62,7 +100,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwt["Issuer"],
         ValidAudience = jwt["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwt["Key"] ?? throw new Exception("JWT Key missing"))
+            Encoding.UTF8.GetBytes(jwt["Key"]!)
         )
     };
 });

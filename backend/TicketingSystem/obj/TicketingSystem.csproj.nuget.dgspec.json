@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj": {}
+    "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj": {}
   },
   "projects": {
-    "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj": {
+    "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj",
+        "projectUniqueName": "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj",
         "projectName": "TicketingSystem",
-        "projectPath": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\TicketingSystem.csproj",
+        "projectPath": "C:\\customer-support-system\\backend\\TicketingSystem\\TicketingSystem.csproj",
         "packagesPath": "C:\\Users\\arvin\\.nuget\\packages\\",
-        "outputPath": "C:\\customer-support-system\\customer_support_system\\backend\\TicketingSystem\\obj\\",
+        "outputPath": "C:\\customer-support-system\\backend\\TicketingSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arvin\\AppData\\Roaming\\NuGet\\NuGet.Config"

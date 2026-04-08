@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using Microsoft.OpenApi.Models;
+using TicketingSystem.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,24 +21,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // =======================
+// CORS (🔥 IMPORTANT FIX)
+// =======================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy => policy
+            .WithOrigins("http://localhost:4200") // Angular URL
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
+// =======================
 // Swagger + JWT
 // =======================
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    // Swagger basic info
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Ticketing API",
-        Version = "v1",
-        Description = "API for Ticketing System"
+        Version = "v1"
     });
 
-    // 🔐 JWT AUTH CONFIG
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Enter JWT token like: Bearer {your token}",
+        Description = "Enter JWT token like: Bearer {token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
@@ -62,7 +72,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // =======================
-// Database (SQL Server)
+// Database
 // =======================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -77,6 +87,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<JwtService>();
+
+builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ITicketCommentRepository, TicketCommentRepository>();
+builder.Services.AddScoped<ITicketCommentService, TicketCommentService>();
 
 // =======================
 // JWT CONFIG
@@ -113,31 +128,29 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // =======================
-// Global Exception Middleware
+// Middleware
 // =======================
+
+// 🔥 CORS MUST BE HERE (before auth)
+app.UseCors("AllowAngular");
+
 app.UseMiddleware<ExceptionMiddleware>();
 
-// =======================
-// Swagger
-// =======================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// =======================
-// Middleware Pipeline
-// =======================
 app.UseHttpsRedirection();
 
-app.UseAuthentication();   // 🔐 IMPORTANT
+app.UseAuthentication();   // 🔐
 app.UseAuthorization();
 
 app.MapControllers();
 
 // =======================
-// AUTO DATABASE CREATE (DEV ONLY)
+// Auto DB Create (DEV)
 // =======================
 using (var scope = app.Services.CreateScope())
 {

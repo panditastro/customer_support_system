@@ -1,5 +1,5 @@
 using TicketingSystem.DTOs;
-
+using System.Security.Claims;
 namespace TicketingSystem.Services.Interfaces
 {
     /// <summary>
@@ -20,5 +20,7 @@ namespace TicketingSystem.Services.Interfaces
 
         Task<string> CreateAgentAsync(CreateUserDto dto);
         Task<string> CreateAdminAsync(CreateUserDto dto);
+        int GetUserId(ClaimsPrincipal user);
+        
     }
 }

@@ -3,7 +3,7 @@ using TicketingSystem.Helpers;
 using TicketingSystem.Models;
 using TicketingSystem.Repositories.Interfaces;
 using TicketingSystem.Services.Interfaces;
-
+using System.Security.Claims;
 
 namespace TicketingSystem.Services
 {
@@ -14,11 +14,23 @@ namespace TicketingSystem.Services
     {
         private readonly IUserRepository _repo;
         private readonly JwtService _jwt;
-
+        
         public AuthService(IUserRepository repo, JwtService jwt)
         {
             _repo = repo;
             _jwt = jwt;
+        }
+
+
+        public int GetUserId(ClaimsPrincipal user)
+        {
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)
+                              ?? user.FindFirst("id");
+
+            if (userIdClaim == null)
+                throw new UnauthorizedAccessException("User ID not found in token");
+
+            return int.Parse(userIdClaim.Value);
         }
 
         /// <summary>
